@@ -49,6 +49,8 @@ interface IState {
  * For left navigation with only icons, show tooltip on the right.
  */
 export class Tooltip extends React.Component<TooltipProps, IState> {
+  private _timer?: number;
+
   static defaultProps = {
     position: 'bottom',
     appendToBody: true
@@ -63,7 +65,13 @@ export class Tooltip extends React.Component<TooltipProps, IState> {
   }
 
   public onToggle = (open: boolean) => {
-    this.setState({ open });
+    if (open) {
+      clearTimeout(this._timer);
+      this._timer = window.setTimeout(() => this.setState({ open }), 800);
+    } else {
+      clearTimeout(this._timer);
+      this._timer = window.setTimeout(() => this.setState({ open }), 80);
+    }
   }
 
   componentWillUnmount() {
